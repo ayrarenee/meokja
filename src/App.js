@@ -7,14 +7,13 @@ import logo from './img.png';
 import "./App.css";
 import PropTypes from 'prop-types';
 
-
 const snacksMessage = 'Would you like to have fries or sundae as your snacks?';
 const drinksMessage = 'Would you like to have iced-tea or softdrinks as your beverage?';
 const sizeMessage = 'Would you like to upgrade your snacks and drinks to a medium or large size?';
-const addSundae = 'Would you like to add a delicious sundae to your order today 🍦?';
+const chickenSizeMessage = 'Would you like to upgrade your snacks and drinks to a medium or large size?';
+const addSundae = 'Would you like to add a delicious sundae to your order today? 🍦';
 const orderDone = 'Has your order been completed?'
 const addPie = 'Would you like to add some pie to your order? 🥧'
-
 
 // Creating our own theme
 const theme = {
@@ -34,10 +33,13 @@ const config = {
   floating: true,
 };
 
+
+
 const orders = []
 function SummaryOfOrder() {
   return (
     <div style={{ width: "100%" }}>
+      <h5>Order: 001</h5>
       <h4>Summary of Orders</h4>
       <table>
         <tbody>
@@ -64,31 +66,30 @@ const addOrder = (value) =>{
   orders.push(value);
   return console.log(orders);
 }
+
 var i = 1;
 function ChefNim(props){
   const steps = [{
     id: '1',
-    message: 'Annyeong! ~ 👋 Welcome to Meokja! I\'m Chef-nim, and I\'m here to help you place your order. 😊 Here\'s Meokja\'s Menu',
-    // trigger: 'mealType',
-    trigger: () => {
-      addOrder('\nMeal Set #' + i + ": ");
-      i++;
-      return 'mealType'
-    }
+    message: 'Annyeong! ~ 👋 Welcome to Meokja! I\'m Chef-nim, and I\'m here to help you place your order. 😊 Please choose from the following option to start.',
+    trigger: 'mealType'
   }, {
     id: 'mealType',
     options: [
       { value: 'Burger Meal', label: 'Burger Meal 🍔', 
       trigger: () => {
-        addOrder('Burger Meal');
+        addOrder('Meal Set #' + i + ': Burger Meal');
+        i++;
         return 'burgerMeal'}},
       { value: 'Pasta Meal', label: 'Pasta Meal 🍝 ',
       trigger: () => {
-        addOrder('Pasta Meal');
+        addOrder('Meal Set #' + i + ': Pasta Meal');
+        i++;
         return 'pastaMeal'}},
       { value: 'Chicken Meal', label: 'Chicken Meal 🍗',
       trigger: () => {
-        addOrder('Chicken Meal');
+        addOrder('Meal Set #' + i + ': Chicken Meal');
+        i++;
         return 'chickenMeal'}},
     ],
   }, {
@@ -132,11 +133,11 @@ function ChefNim(props){
     options: [
       { value: 'Iced-Tea', label: 'Iced-Tea',
       trigger: () => {
-        addOrder('\nIced Tea');
+        addOrder('Iced Tea');
         return 'burgerSDSSize' }},
       { value: 'Softdrinks', label: 'Softdrinks',
       trigger: () => {
-        addOrder('\n Softdrinks');
+        addOrder('Softdrinks');
         return 'burgerSDSSize' }},
     ],
   }, {
@@ -219,11 +220,11 @@ function ChefNim(props){
     options: [
       { value: 'Iced-Tea', label: 'Iced-Tea',
       trigger: () => {
-        addOrder('\nIced Tea');
+        addOrder('Iced Tea');
         return 'pastaFSize' }},
       { value: 'Softdrinks', label: 'Softdrinks',
       trigger: () => {
-        addOrder('\nSoftdrinks');
+        addOrder('Softdrinks');
         return 'pastaFSize' }},
     ],
   }, {
@@ -231,11 +232,11 @@ function ChefNim(props){
     options: [
       { value: 'Iced-Tea', label: 'Iced-Tea',
       trigger: () => {
-        addOrder('\n Iced Tea');
+        addOrder('Iced Tea');
         return 'pastaSSize' }},
       { value: 'Softdrinks', label: 'Softdrinks',
       trigger: () => {
-        addOrder('\nSoftdrinks');
+        addOrder('Softdrinks');
         return 'pastaSSize' }},
     ],
   }, {
@@ -298,20 +299,20 @@ function ChefNim(props){
     options: [
       { value: 'Iced-Tea', label: 'Iced-Tea',
       trigger: () => {
-        addOrder('\n Iced Tea');
+        addOrder('Iced Tea');
         return 'chickenIcedtea' }},
       { value: 'Softdrinks', label: 'Softdrinks',
       trigger: () => {
-        addOrder('\n Softdrinks');
+        addOrder('Softdrinks');
         return 'chickenSoftdrinks' }},
     ],
   }, {
     id: 'chickenIcedtea',
-    message: 'You have added iced-tea to your order.' + sizeMessage,
+    message: 'You have added iced-tea to your order.' + chickenSizeMessage,
     trigger: 'chickenSize'
   }, {
     id: 'chickenSoftdrinks',
-    message: 'You have added softdrinks to your order.' + sizeMessage,
+    message: 'You have added softdrinks to your order.' + chickenSizeMessage,
     trigger: 'chickenSize'
   }, {
     id: 'chickenSize',
@@ -386,8 +387,13 @@ function ChefNim(props){
     asMessage: true,
     trigger: 'endOrder',
   },{
+    id: 'totalPrice',
+    component: <calculatePrice/>,
+    asMessage: true,
+    trigger: 'endOrder',
+  },{
     id: 'endOrder',
-    message: 'Awesome! Your orders complete!',
+    message: 'Your orders complete! Please present your order number to the cashier to pay for your order. 맛있게 드세요!~ 🤞',
     end: true,
   },
   ]; 
@@ -407,8 +413,5 @@ function ChefNim(props){
     </div>
   );
 }
-
-
-
 
 export default ChefNim;
